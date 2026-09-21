@@ -1,0 +1,110 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+
+int main() {
+    // -------------------------------------------------------------------------
+    // PHASE 2: PART I — Inputs & Primitive Data Types
+    // -------------------------------------------------------------------------
+    std::string foodName;
+    char itemCode;
+    int itemQuantity;
+    double unitPrice;
+    char memberInput;
+    bool isMember = false;
+
+    // 1. Input Collection
+    std::cout << "Enter food item name: ";
+    std::getline(std::cin, foodName);
+
+    std::cout << "Enter item code (single character): ";
+    std::cin >> itemCode;
+
+    std::cout << "Enter item quantity: ";
+    std::cin >> itemQuantity;
+
+    std::cout << "Enter unit price: $";
+    std::cin >> unitPrice;
+
+    std::cout << "Is customer a rewards member? (y/n): ";
+    std::cin >> memberInput;
+
+    if (memberInput == 'y' || memberInput == 'Y') {
+        isMember = true;
+    }
+
+    // -------------------------------------------------------------------------
+    // PHASE 4: PART II — Buffer Flushing & Cashier Notes
+    // -------------------------------------------------------------------------
+    // Clear leftover '\n' from cin before calling std::getline
+    std::cin.ignore(10000, '\n');
+
+    std::string cashierNotes;
+    std::cout << "Enter cashier notes: ";
+    std::getline(std::cin, cashierNotes);
+
+    // -------------------------------------------------------------------------
+    // PHASE 4: PART II — Calculations & Discount Logic
+    // -------------------------------------------------------------------------
+    double subtotal = itemQuantity * unitPrice;
+    double discountAmount = 0.0;
+
+    if (isMember) {
+        discountAmount = subtotal * 0.10; // 10% discount
+    }
+
+    double discountedSubtotal = subtotal - discountAmount;
+    double salesTaxRate = 0.08; // 8% tax
+    double taxAmount = discountedSubtotal * salesTaxRate;
+    double grandTotal = discountedSubtotal + taxAmount;
+
+    // -------------------------------------------------------------------------
+    // PHASE 2 & 4: Formatted Output (<iomanip>)
+    // -------------------------------------------------------------------------
+    std::cout << "\n========================================\n";
+    std::cout << "            STORE RECEIPT               \n";
+    std::cout << "========================================\n";
+
+    // Set floating point output format for monetary values
+    std::cout << std::fixed << std::setprecision(2);
+
+    // Print Receipt Details
+    std::cout << std::left  << std::setw(20) << "Item Name:"     << std::right << std::setw(18) << foodName << "\n";
+    std::cout << std::left  << std::setw(20) << "Item Code:"     << std::right << std::setw(18) << itemCode << "\n";
+    std::cout << std::left  << std::setw(20) << "Quantity:"      << std::right << std::setw(18) << itemQuantity << "\n";
+    std::cout << std::left  << std::setw(20) << "Unit Price:"    << std::right << "$" << std::setw(17) << unitPrice << "\n";
+    std::cout << std::left  << std::setw(20) << "Subtotal:"      << std::right << "$" << std::setw(17) << subtotal << "\n";
+
+    if (isMember) {
+        std::cout << std::left  << std::setw(20) << "Member Discount (10%):" << std::right << "-$" << std::setw(16) << discountAmount << "\n";
+    }
+
+    std::cout << std::left  << std::setw(20) << "Sales Tax (8%):" << std::right << "$" << std::setw(17) << taxAmount << "\n";
+    std::cout << "----------------------------------------\n";
+    std::cout << std::left  << std::setw(20) << "GRAND TOTAL:"   << std::right << "$" << std::setw(17) << grandTotal << "\n";
+    std::cout << "========================================\n";
+
+    // -------------------------------------------------------------------------
+    // PHASE 4: Inventory Audit Table
+    // -------------------------------------------------------------------------
+    std::cout << "\n--- INVENTORY AUDIT TABLE ---\n";
+
+    // Header
+    std::cout << std::left 
+              << std::setw(15) << "CODE" 
+              << std::setw(15) << "QTY" 
+              << std::setw(15) << "PRICE" 
+              << std::right << std::setw(10) << "MEMBER?" << "\n";
+    std::cout << "-------------------------------------------------------\n";
+
+    // Data Row
+    std::cout << std::left 
+              << std::setw(15) << itemCode 
+              << std::setw(15) << itemQuantity 
+              << "$" << std::setw(14) << unitPrice 
+              << std::right << std::setw(10) << (isMember ? "YES" : "NO") << "\n";
+
+    std::cout << "\nCashier Notes: " << cashierNotes << "\n";
+
+    return 0;
+}
